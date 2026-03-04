@@ -519,3 +519,114 @@ div.hl_login--body {
     padding: 28px 24px !important;
   }
 }
+
+/* ============================================================
+   TAILWIND UTILITY OVERRIDES
+   These target GHL's Tailwind-generated classes used in
+   sub-account pages like Integrations, Settings cards, etc.
+   Scoped carefully to avoid breaking chart containers.
+   ============================================================ */
+
+/* White / light backgrounds on content cards */
+.bg-white,
+.bg-gray-50,
+.bg-gray-100 {
+  background-color: #1a1a1a !important;
+}
+
+/* Text that goes invisible on dark bg */
+.text-gray-900,
+.text-gray-800,
+.text-gray-700 {
+  color: #f0f0f2 !important;
+}
+
+.text-gray-600,
+.text-gray-500 {
+  color: #8a8a8e !important;
+}
+
+.text-gray-400 {
+  color: #636366 !important;
+}
+
+/* Borders */
+.border-gray-200,
+.border-gray-100,
+.divide-gray-200 > * + * {
+  border-color: rgba(255,255,255,0.07) !important;
+}
+
+/* Integration / settings page card bodies */
+.rounded-lg.bg-white,
+.rounded-xl.bg-white,
+.rounded-md.bg-white,
+.rounded-lg.bg-gray-50,
+.rounded-xl.bg-gray-50 {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+/* Buttons inside those cards */
+.bg-white .btn,
+.bg-gray-50 .btn,
+.bg-gray-100 .btn {
+  background-color: #252525 !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #e0e0e5 !important;
+}
+
+/* Input fields in Tailwind-styled forms */
+.bg-white input,
+.bg-white textarea,
+.bg-white select,
+.bg-gray-50 input,
+.bg-gray-50 textarea,
+.bg-gray-50 select {
+  background-color: #141414 !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #f5f5f7 !important;
+}
+
+/* Search bar in sub-account pages */
+input[class*="search"],
+input[placeholder*="Search"],
+input[placeholder*="search"] {
+  background-color: #1a1a1a !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #f5f5f7 !important;
+}
+
+/* Page/section wrapper backgrounds */
+.min-h-screen.bg-white,
+.min-h-screen.bg-gray-50,
+.min-h-full.bg-white,
+.min-h-full.bg-gray-50 {
+  background-color: #0a0a0a !important;
+}
+
+/* Sub-account settings sidebar */
+.bg-white.border-r,
+.bg-gray-50.border-r {
+  background-color: #0f0f0f !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
+/* Table rows in Tailwind tables */
+.bg-white tbody tr,
+tr.bg-white {
+  background-color: transparent !important;
+}
+
+tr.bg-gray-50,
+tbody tr:nth-child(even).bg-gray-50 {
+  background-color: rgba(255,255,255,0.02) !important;
+}
+
+/* Stat/metric cards */
+.shadow.bg-white,
+.shadow-sm.bg-white,
+.shadow-md.bg-white {
+  background-color: #1a1a1a !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+}

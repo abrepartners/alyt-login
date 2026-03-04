@@ -687,7 +687,7 @@
   const CONFIG = {
     ghlDomain:     'https://app.averyandbryant.com',
     loginPath:     '/login',
-    googleSSOPath: '/auth/google',
+    googleSSOUrl:  'https://login.leadconnectorhq.com/google?origin=https://app.averyandbryant.com',
   };
 
   // ============================================================
@@ -768,7 +768,11 @@
   }
 
   function handleGoogleSSO() {
-    window.location.href = `${CONFIG.ghlDomain}${CONFIG.googleSSOPath}`;
+    // GHL Google OAuth requires a popup — opens on leadconnectorhq.com
+    const popup = window.open(CONFIG.googleSSOUrl, 'ghl_google_auth', 'width=500,height=600,left=400,top=100');
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      showError('Pop-ups are blocked. Please allow pop-ups for this site and try again.');
+    }
   }
 
   function showError(msg) {

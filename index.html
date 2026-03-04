@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALYT — Sign In</title>
+<meta name="description" content="Sign in to your ALYT account powered by Avery & Bryant">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:         #C41230;
+    --red-dark:    #A50E28;
+    --red-deep:    #8B0B20;
+    --red-glow:    rgba(196, 18, 48, 0.2);
+    --red-subtle:  rgba(196, 18, 48, 0.08);
+    --black:       #000000;
+    --black-soft:  #0a0a0a;
+    --black-mid:   #111111;
+    --black-card:  #141414;
+    --black-input: #1a1a1a;
+    --black-hover: #1e1e1e;
+    --border:      rgba(255,255,255,0.07);
+    --border-mid:  rgba(255,255,255,0.12);
+    --gray-dim:    #2c2c2e;
+    --gray-mid:    #48484a;
+    --gray-muted:  #636366;
+    --gray-soft:   #8a8a8e;
+    --gray-light:  #aeaeb2;
+    --white:       #f5f5f7;
+    --font:        'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    font-family: var(--font);
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ---- AMBIENT BACKGROUND ---- */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .bg-layer::before {
+    content: '';
+    position: absolute;
+    top: -15%; left: -5%;
+    width: 55vw; height: 55vw;
+    background: radial-gradient(ellipse, rgba(196,18,48,0.07) 0%, transparent 65%);
+    filter: blur(80px);
+  }
+  .bg-layer::after {
+    content: '';
+    position: absolute;
+    bottom: -20%; right: -10%;
+    width: 45vw; height: 45vw;
+    background: radial-gradient(ellipse, rgba(196,18,48,0.04) 0%, transparent 65%);
+    filter: blur(100px);
+  }
+
+  /* Subtle grid */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 90% 90% at 30% 50%, black 10%, transparent 75%);
+  }
+
+  /* ---- LAYOUT ---- */
+  .layout {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    min-height: 100vh;
+  }
+
+  /* ============================================================
+     LEFT PANEL — scrolling feature showcase
+  ============================================================ */
+  .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Top brand mark */
+  .brand-mark {
+    position: absolute;
+    top: 40px; left: 72px;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.05s ease both;
+  }
+
+  .brand-mark img {
+    height: 28px; width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+  }
+
+  /* Slide container */
+  .slides-wrap {
+    position: relative;
+    height: 380px;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  .slide-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .slide-eyebrow-line {
+    width: 20px; height: 1px;
+    background: var(--red);
+  }
+
+  .slide-eyebrow-text {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  .slide-headline {
+    font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.06;
+    color: var(--white);
+    margin-bottom: 18px;
+    max-width: 460px;
+  }
+
+  .slide-headline em {
+    font-style: normal;
+    background: linear-gradient(135deg, #fff 0%, #636366 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .slide-body {
+    font-size: 15px; font-weight: 300;
+    color: var(--gray-muted);
+    line-height: 1.7;
+    max-width: 420px;
+    margin-bottom: 32px;
+  }
+
+  /* Feature pills */
+  .slide-features {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .feature-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-mid);
+    border-radius: 980px;
+    padding: 7px 14px;
+    font-size: 13px; font-weight: 400;
+    color: var(--gray-light);
+    transition: all 0.2s ease;
+  }
+
+  .feature-pill:hover {
+    background: var(--red-subtle);
+    border-color: rgba(196,18,48,0.3);
+    color: var(--white);
+  }
+
+  .pill-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 6px rgba(196,18,48,0.6);
+    flex-shrink: 0;
+  }
+
+  /* Slide nav dots */
+  .slide-nav {
+    position: absolute;
+    bottom: -48px; left: 0;
+    display: flex; gap: 8px; align-items: center;
+  }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gray-dim);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .nav-dot.active {
+    background: var(--red);
+    width: 20px;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(196,18,48,0.5);
+  }
+
+  /* Bottom badge */
+  .left-footer {
+    position: absolute;
+    bottom: 44px; left: 72px;
+    display: flex; align-items: center; gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.6s ease both;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #34c759;
+    box-shadow: 0 0 6px rgba(52,199,89,0.6);
+  }
+
+  .status-text {
+    font-size: 11px; color: var(--gray-mid);
+    letter-spacing: 0.02em;
+  }
+
+  /* ============================================================
+     RIGHT PANEL — login form
+  ============================================================ */
+  .right {
+    background: var(--black-card);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 52px;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 0.5s 0.1s ease both;
+  }
+
+  /* Logo top of form panel */
+  .form-logo {
+    position: absolute;
+    top: 36px; left: 52px;
+  }
+
+  .form-logo img {
+    height: 30px; width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.92;
+  }
+
+  .form-logo-sub {
+    font-size: 10px; font-weight: 400;
+    color: var(--gray-mid);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  /* Form */
+  .form-wrap { width: 100%; max-width: 340px; }
+
+  .form-eyebrow {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .form-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 1px;
+    background: var(--red);
+  }
+
+  .form-title {
+    font-size: 26px; font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .form-subtitle {
+    font-size: 14px; font-weight: 300;
+    color: var(--gray-muted);
+    margin-bottom: 32px;
+  }
+
+  /* Error */
+  .error-msg {
+    display: none;
+    background: rgba(255,69,58,0.1);
+    border: 1px solid rgba(255,69,58,0.25);
+    border-radius: 8px;
+    color: #ff453a;
+    font-size: 13px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .error-msg.show { display: block; }
+
+  /* Fields */
+  .field { margin-bottom: 14px; }
+
+  .field-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 7px;
+  }
+
+  .field label,
+  .field-top label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-muted);
+  }
+
+  .forgot {
+    font-size: 12px; color: var(--red);
+    text-decoration: none; font-weight: 400;
+    transition: color 0.2s;
+  }
+  .forgot:hover { color: var(--red-dark); }
+
+  .field input {
+    width: 100%;
+    background: var(--black-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 15px; font-weight: 300;
+    padding: 13px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .field input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px var(--red-glow);
+    background: var(--black-hover);
+  }
+
+  .field input::placeholder { color: var(--gray-dim); }
+
+  /* Sign in button */
+  .btn-signin {
+    width: 100%;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 980px;
+    font-family: var(--font);
+    font-size: 15px; font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 14px 24px;
+    cursor: pointer;
+    margin-top: 20px; margin-bottom: 16px;
+    transition: all 0.25s ease;
+    position: relative; overflow: hidden;
+  }
+
+  .btn-signin::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 55%);
+    pointer-events: none;
+  }
+
+  .btn-signin:hover {
+    background: var(--red-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(196,18,48,0.4);
+  }
+
+  .btn-signin:active { transform: translateY(0); }
+
+  .btn-signin.loading { pointer-events: none; opacity: 0.7; }
+
+  /* Divider */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 4px 0 14px;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--border);
+  }
+  .divider span {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--gray-dim);
+  }
+
+  /* Google SSO */
+  .btn-google {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--gray-light);
+    font-family: var(--font);
+    font-size: 14px; font-weight: 400;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; align-items: center;
+    justify-content: center; gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .btn-google:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: var(--border-mid);
+    color: var(--white);
+  }
+
+  .google-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Terms */
+  .terms {
+    font-size: 11px; color: var(--gray-dim);
+    text-align: center; line-height: 1.6;
+  }
+  .terms a { color: var(--red); text-decoration: none; }
+  .terms a:hover { color: var(--red-dark); }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ---- MOBILE ---- */
+  @media (max-width: 900px) {
+    body { overflow: auto; }
+    .layout { grid-template-columns: 1fr; }
+    .left { display: none; }
+    .right {
+      border-left: none;
+      min-height: 100vh;
+      padding: 100px 32px 60px;
+    }
+    .form-logo { left: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+
+<div class="layout">
+
+  <!-- ===== LEFT PANEL ===== -->
+  <div class="left">
+
+    <!-- Brand mark top left -->
+    <div class="brand-mark">
+      <span style="font-size:22px;font-weight:700;letter-spacing:0.08em;color:#f5f5f7;">ALYT</span>
+    </div>
+
+    <!-- Scrolling slides -->
+    <div class="slides-wrap" id="slidesWrap">
+
+      <!-- SLIDE 1 — Brand intro -->
+      <div class="slide active" data-index="0">
+        <div class="slide-eyebrow">
+          <div class="slide-eyebrow-line"></div>
+          <span class="slide-eyebrow-text">Welcome to ALYT</span>
+        </div>
+        <h1 class="slide-headline">
+          Real estate media,<br><em>reimagined.</em>
+        </h1>
+        <p class="slide-body">
+          Your command center for visual content, client management, and media delivery — purpose-built for real estate professionals in Arkansas and beyond.
+        </p>
+        <div class="slide-features">
+          <div class="feature-pill"><div class="pill-dot"></div>Photography</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Videography</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Drone</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Virtual Staging</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Agent Branding</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 — Floor Plans & 3D -->
+      <div class="slide" data-index="1">
+        <div class="slide-eyebrow">
+          <div class="slide-eyebrow-line"></div>
+          <span class="slide-eyebrow-text">Visual Intelligence</span>
+        </div>
+        <h1 class="slide-headline">
+          3D floor plans<br><em>that sell listings.</em>
+        </h1>
+        <p class="slide-body">
+          Photorealistic 3D renders, animated floor plans, and stylized graphic art — three distinct output styles that give buyers a complete picture before they ever walk through the door.
+        </p>
+        <div class="slide-features">
+          <div class="feature-pill"><div class="pill-dot"></div>Photorealistic Renders</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Animated Floor Plans</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Graphic Art Style</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Fast Turnaround</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — Client Portal -->
+      <div class="slide" data-index="2">
+        <div class="slide-eyebrow">
+          <div class="slide-eyebrow-line"></div>
+          <span class="slide-eyebrow-text">Client Experience</span>
+        </div>
+        <h1 class="slide-headline">
+          Deliver media<br><em>like a premium brand.</em>
+        </h1>
+        <p class="slide-body">
+          Your clients get a white-glove delivery portal. Track orders, download assets, review proofs, and communicate — all in one place that looks and feels like yours.
+        </p>
+        <div class="slide-features">
+          <div class="feature-pill"><div class="pill-dot"></div>Client Portal</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Asset Delivery</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Proof Review</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Order Tracking</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — Automation -->
+      <div class="slide" data-index="3">
+        <div class="slide-eyebrow">
+          <div class="slide-eyebrow-line"></div>
+          <span class="slide-eyebrow-text">Smart Automation</span>
+        </div>
+        <h1 class="slide-headline">
+          Workflows that<br><em>run themselves.</em>
+        </h1>
+        <p class="slide-body">
+          Automated booking confirmations, follow-ups, and delivery notifications. From the moment an agent books to the moment they download — every touchpoint handled automatically.
+        </p>
+        <div class="slide-features">
+          <div class="feature-pill"><div class="pill-dot"></div>Auto Follow-Ups</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Smart Booking</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Pipeline Tracking</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Voice AI</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5 — CRM -->
+      <div class="slide" data-index="4">
+        <div class="slide-eyebrow">
+          <div class="slide-eyebrow-line"></div>
+          <span class="slide-eyebrow-text">Relationships First</span>
+        </div>
+        <h1 class="slide-headline">
+          Every agent.<br><em>Every relationship.</em>
+        </h1>
+        <p class="slide-body">
+          Built on a foundation of genuine service. Track every client, every job, every conversation — so you always show up prepared, on time, and ahead of the competition.
+        </p>
+        <div class="slide-features">
+          <div class="feature-pill"><div class="pill-dot"></div>Contact Management</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Conversation Inbox</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Calendar & Booking</div>
+          <div class="feature-pill"><div class="pill-dot"></div>Reporting</div>
+        </div>
+      </div>
+
+    </div><!-- /slides-wrap -->
+
+    <!-- Dot nav -->
+    <div class="slide-nav" id="slideNav">
+      <button class="nav-dot active" data-target="0"></button>
+      <button class="nav-dot" data-target="1"></button>
+      <button class="nav-dot" data-target="2"></button>
+      <button class="nav-dot" data-target="3"></button>
+      <button class="nav-dot" data-target="4"></button>
+    </div>
+
+    <!-- Footer status -->
+    <div class="left-footer">
+      <div class="status-dot"></div>
+      <span class="status-text">All systems operational</span>
+    </div>
+
+  </div><!-- /left -->
+
+  <!-- ===== RIGHT PANEL ===== -->
+  <div class="right">
+
+    <!-- Logo -->
+    <div class="form-logo">
+      <div style="font-size:22px;font-weight:700;letter-spacing:0.08em;color:#f5f5f7;line-height:1;">ALYT</div>
+      <div class="form-logo-sub">powered by Avery &amp; Bryant</div>
+    </div>
+
+    <div class="form-wrap">
+
+      <div class="form-eyebrow">Welcome back</div>
+      <h2 class="form-title">Sign in to ALYT</h2>
+      <p class="form-subtitle">Enter your credentials to continue</p>
+
+      <div class="error-msg" id="errorMsg">Incorrect email or password. Please try again.</div>
+
+      <div class="field">
+        <div class="field-top"><label for="email">Email</label></div>
+        <input type="email" id="email" placeholder="you@company.com" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <div class="field-top">
+          <label for="password">Password</label>
+          <a href="YOUR-GHL-DOMAIN/auth/forgot-password" class="forgot">Forgot password?</a>
+        </div>
+        <input type="password" id="password" placeholder="••••••••••" autocomplete="current-password">
+      </div>
+
+      <button class="btn-signin" id="signinBtn" onclick="handleSignIn()">Sign in</button>
+
+      <div class="divider"><span>Or continue with</span></div>
+
+      <button class="btn-google" onclick="handleGoogleSSO()">
+        <svg class="google-icon" viewBox="0 0 24 24">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Sign in with Google
+      </button>
+
+      <p class="terms">
+        By signing in you agree to our <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>
+      </p>
+
+    </div>
+  </div>
+
+</div><!-- /layout -->
+
+<script>
+  // ============================================================
+  // CONFIG — update YOUR-GHL-DOMAIN before deploying
+  // ============================================================
+  const CONFIG = {
+    ghlDomain:     'https://YOUR-GHL-DOMAIN',
+    loginPath:     '/login',
+    googleSSOPath: '/auth/google',
+  };
+
+  // ============================================================
+  // SLIDE CAROUSEL
+  // ============================================================
+  let currentSlide = 0;
+  const totalSlides = 5;
+  let autoTimer;
+
+  function goToSlide(index) {
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.nav-dot');
+
+    slides[currentSlide].classList.remove('active');
+    slides[currentSlide].classList.add('exit');
+
+    setTimeout(() => {
+      slides[currentSlide].classList.remove('exit');
+      currentSlide = index;
+      slides[currentSlide].classList.add('active');
+    }, 50);
+
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    currentSlide = index;
+  }
+
+  function nextSlide() {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }
+
+  function startAuto() {
+    autoTimer = setInterval(nextSlide, 4500);
+  }
+
+  // Dot nav clicks
+  document.querySelectorAll('.nav-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      clearInterval(autoTimer);
+      goToSlide(parseInt(dot.dataset.target));
+      startAuto();
+    });
+  });
+
+  startAuto();
+
+  // ============================================================
+  // AUTH
+  // ============================================================
+  function handleSignIn() {
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn      = document.getElementById('signinBtn');
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (!email || !password) {
+      showError('Please enter your email and password.');
+      return;
+    }
+
+    btn.textContent = 'Signing in…';
+    btn.classList.add('loading');
+    errorMsg.classList.remove('show');
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `${CONFIG.ghlDomain}${CONFIG.loginPath}`;
+
+    [['email', email], ['password', password]].forEach(([name, value]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  function handleGoogleSSO() {
+    window.location.href = `${CONFIG.ghlDomain}${CONFIG.googleSSOPath}`;
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSignIn();
+  });
+</script>
+
+</body>
+</html>

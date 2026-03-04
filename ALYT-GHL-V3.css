@@ -1,0 +1,521 @@
+/** ============================================================
+    ALYT — GHL Agency Dashboard CSS v3
+    Avery & Bryant — Brand Red Edition
+    
+    SAFE VERSION — uses only verified GHL class names
+    No broad overrides that break React components or charts
+    
+    Paste into: Agency Settings → Company → Custom CSS
+    ============================================================ */
+
+/* ---- FONT ---- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================
+   GHL NATIVE CSS VARIABLES
+   These are the official GHL whitelabel variables — safest
+   way to theme the platform without breaking anything
+   ============================================================ */
+:root {
+  --nav-menus-background-color:         #0f0f0f !important;
+  --nav-menu-text-color:                #c0c0c5 !important;
+  --nav-menu-icon-color:                #636366 !important;
+  --nav-hover-background-color:         rgba(255,255,255,0.07) !important;
+  --location-switcher-background-color: #161616 !important;
+  --sidebar-agency-back-button:         #1c1c1e !important;
+  --card-header-background-color:       #161616 !important;
+  --card-header-text-color:             #f5f5f7 !important;
+  --button-background-color:            #C41230 !important;
+  --button-text-color:                  #ffffff !important;
+  --tw-ring-color:                      rgba(196,18,48,0.35) !important;
+  --dashboard-time-and-date-color:      #636366 !important;
+}
+
+/* ============================================================
+   FONT — apply only to safe, stable containers
+   ============================================================ */
+body,
+.page-wrapper,
+.topbar,
+.topbar *,
+.hl_header,
+.hl_header *,
+.left-sidebar,
+.left-sidebar *,
+#sidebar-v2,
+#sidebar-v2 *,
+.card,
+.card *,
+.form-control,
+.btn {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+/* ============================================================
+   TOP HEADER / TOPBAR
+   Verified class names from GHL docs
+   ============================================================ */
+.topbar,
+.hl_header,
+header.navbar {
+  background-color: #0a0a0a !important;
+  border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+}
+
+.topbar .nav-link,
+.topbar .navbar-text,
+.hl_header a,
+.hl_header span {
+  color: #c0c0c5 !important;
+}
+
+.topbar .nav-link:hover,
+.hl_header a:hover {
+  color: #ffffff !important;
+}
+
+/* ============================================================
+   SIDEBAR — #sidebar-v2 is stable and verified
+   ============================================================ */
+#sidebar-v2,
+.v2-open #sidebar-v2 {
+  background-color: #0f0f0f !important;
+  border-right: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Nav links */
+#sidebar-v2 nav a {
+  border-radius: 8px !important;
+  margin: 1px 8px !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+  color: #aeaeb2 !important;
+}
+
+#sidebar-v2 nav a:hover {
+  background-color: rgba(255,255,255,0.06) !important;
+  color: #ffffff !important;
+}
+
+#sidebar-v2 nav a.active,
+#sidebar-v2 nav a.router-link-active {
+  background-color: rgba(196,18,48,0.12) !important;
+  color: #ffffff !important;
+}
+
+/* Active nav indicator */
+#sidebar-v2 nav a.active::before,
+#sidebar-v2 nav a.router-link-active::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 20% !important;
+  height: 60% !important;
+  width: 3px !important;
+  background: #C41230 !important;
+  border-radius: 0 3px 3px 0 !important;
+}
+
+/* Nav text */
+#sidebar-v2 nav a span,
+#sidebar-v2 .text-white {
+  color: inherit !important;
+}
+
+/* Dividers */
+#sidebar-v2 #sb_divider-1,
+#sidebar-v2 hr {
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
+/* Location switcher */
+#location-switcher-sidbar-v2 {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 8px !important;
+  color: #f5f5f7 !important;
+}
+
+/* Back button */
+#sidebar-v2 #backButtonv2 {
+  background-color: #1c1c1e !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 8px !important;
+  color: #aeaeb2 !important;
+}
+
+/* Quick actions pill */
+#quickActions {
+  border: 1px solid #3a3a3c !important;
+  border-radius: 980px !important;
+  background: #1c1c1e !important;
+  color: #f5f5f7 !important;
+  transition: all 0.2s ease !important;
+}
+
+#quickActions:hover {
+  border-color: #C41230 !important;
+  background: rgba(196,18,48,0.08) !important;
+}
+
+/* ============================================================
+   CARD HEADERS
+   Using verified .card .card-header selector
+   ============================================================ */
+.card .card-header,
+.card-header {
+  background-color: #161616 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.card .card-header h4,
+.card .card-header h5,
+.card .card-header .card-title,
+.card-header h4,
+.card-header h5 {
+  color: #f5f5f7 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.card .card-header a,
+.card-header a {
+  color: #C41230 !important;
+}
+
+/* ============================================================
+   BUTTONS
+   Scoped to .btn class — verified GHL selector
+   ============================================================ */
+.btn-primary,
+.btn.btn-blue,
+.btn[class*="primary"] {
+  background-color: #C41230 !important;
+  border-color: #C41230 !important;
+  color: #ffffff !important;
+  border-radius: 980px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover,
+.btn.btn-blue:hover {
+  background-color: #A50E28 !important;
+  border-color: #A50E28 !important;
+  box-shadow: 0 4px 16px rgba(196,18,48,0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-secondary,
+.btn-outline-secondary {
+  background-color: #1c1c1e !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  color: #e0e0e5 !important;
+  border-radius: 980px !important;
+}
+
+.btn-secondary:hover {
+  background-color: #252525 !important;
+  color: #ffffff !important;
+}
+
+/* ============================================================
+   FORM INPUTS
+   Scoped to .form-control — verified GHL selector
+   NOTE: NOT overriding select dropdowns broadly to avoid 
+   breaking React-powered selects
+   ============================================================ */
+.form-control,
+input[type="text"].form-control,
+input[type="email"].form-control,
+input[type="password"].form-control,
+input[type="search"].form-control,
+textarea.form-control {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 8px !important;
+  color: #f5f5f7 !important;
+  font-size: 14px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.form-control:focus,
+input[type="text"].form-control:focus,
+input[type="email"].form-control:focus,
+input[type="password"].form-control:focus {
+  border-color: #C41230 !important;
+  box-shadow: 0 0 0 3px rgba(196,18,48,0.15) !important;
+  outline: none !important;
+  background-color: #1f1f1f !important;
+}
+
+.form-control::placeholder {
+  color: #3a3a3c !important;
+}
+
+/* ============================================================
+   TABLES
+   Scoped .table selector — verified
+   NOT overriding thead/th broadly to avoid layout collapse
+   ============================================================ */
+.table tbody td {
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  color: #c0c0c5 !important;
+  vertical-align: middle !important;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255,255,255,0.025) !important;
+}
+
+/* ============================================================
+   LOADING BAR — nprogress (safe, non-reactive)
+   ============================================================ */
+#nprogress .bar {
+  background-color: #C41230 !important;
+  height: 2px !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #C41230, 0 0 5px #C41230 !important;
+}
+
+/* ============================================================
+   BADGES — scoped .badge class
+   ============================================================ */
+.badge-primary {
+  background-color: rgba(196,18,48,0.12) !important;
+  color: #ff6b80 !important;
+  border-radius: 20px !important;
+}
+
+.badge-success {
+  background-color: rgba(52,199,89,0.12) !important;
+  color: #34c759 !important;
+}
+
+.badge-warning {
+  background-color: rgba(255,159,10,0.12) !important;
+  color: #ff9f0a !important;
+}
+
+.badge-danger {
+  background-color: rgba(255,69,58,0.12) !important;
+  color: #ff453a !important;
+}
+
+/* ============================================================
+   SCROLLBAR — safe to override globally
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #3a3a3c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: #636366; }
+
+/* ============================================================
+   LOGIN PAGE — .hl_login prefix (verified, scoped)
+   These ONLY apply to the GHL login page
+   ============================================================ */
+
+/* Outer wrapper */
+.hl_login {
+  background-color: #000000 !important;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(196,18,48,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(196,18,48,0.05) 0%, transparent 70%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 100vh !important;
+}
+
+/* Header (logo area) */
+.hl_login .hl_login--header {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+/* Logo sizing */
+.hl_login .hl_login--header img {
+  max-height: 36px !important;
+  width: auto !important;
+}
+
+/* Login card */
+div.hl_login--body {
+  max-width: 440px !important;
+  width: 100% !important;
+  background-color: #141414 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.75) !important;
+}
+
+/* Card inner — remove default bg */
+.hl_login--body .card {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.hl_login--body .card .card-body {
+  padding: 40px 36px !important;
+  background-color: transparent !important;
+}
+
+/* Heading */
+.hl_login--body .login-card-heading h2,
+.hl_login--body .heading2,
+.hl_login--body h2 {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  letter-spacing: -0.03em !important;
+  margin-bottom: 6px !important;
+}
+
+.hl_login--body p,
+.hl_login--body .paragraph {
+  color: #636366 !important;
+  font-size: 14px !important;
+}
+
+/* Input fields */
+.hl_login .form-control {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 10px !important;
+  color: #f5f5f7 !important;
+  font-size: 15px !important;
+  padding: 12px 14px !important;
+}
+
+.hl_login .form-control:focus {
+  border-color: #C41230 !important;
+  box-shadow: 0 0 0 3px rgba(196,18,48,0.15) !important;
+  background-color: #1f1f1f !important;
+}
+
+.hl_login .form-control::placeholder {
+  color: #48484a !important;
+}
+
+/* Labels */
+.hl_login label {
+  color: #8a8a8e !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+/* Sign in button */
+.hl_login .btn.btn-blue,
+.hl_login .btn-primary,
+.hl_login button[type="submit"] {
+  width: 100% !important;
+  background-color: #C41230 !important;
+  border-color: #C41230 !important;
+  color: #ffffff !important;
+  border-radius: 980px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  padding: 13px 24px !important;
+  transition: all 0.2s ease !important;
+  letter-spacing: -0.01em !important;
+}
+
+.hl_login .btn.btn-blue:hover,
+.hl_login .btn-primary:hover,
+.hl_login button[type="submit"]:hover {
+  background-color: #A50E28 !important;
+  border-color: #A50E28 !important;
+  box-shadow: 0 4px 20px rgba(196,18,48,0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Forgot password link */
+.hl_login a,
+.hl_login .forgot-password {
+  color: #C41230 !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+}
+
+.hl_login a:hover { color: #A50E28 !important; }
+
+/* Divider */
+.hl_login hr,
+.hl_login .divider {
+  border-color: rgba(255,255,255,0.07) !important;
+  margin: 20px 0 !important;
+}
+
+/* "or" text */
+.hl_login .or-text,
+.hl_login .divider-text {
+  color: #48484a !important;
+  font-size: 12px !important;
+  background-color: #141414 !important;
+  padding: 0 10px !important;
+}
+
+/* Google SSO button */
+.hl_login .btn-outline-secondary,
+.hl_login .google-login-btn,
+.hl_login .sso-btn {
+  width: 100% !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 10px !important;
+  color: #e0e0e5 !important;
+  font-size: 14px !important;
+  padding: 11px 20px !important;
+  transition: all 0.2s ease !important;
+}
+
+.hl_login .btn-outline-secondary:hover {
+  background-color: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+}
+
+/* Footer fine print */
+.hl_login small,
+.hl_login .login-footer {
+  color: #48484a !important;
+  font-size: 12px !important;
+}
+
+.hl_login small a { color: #C41230 !important; }
+
+/* Powered by badge */
+.hl_login .powered-by,
+.hl_login [class*="powered"] {
+  color: #3a3a3c !important;
+  font-size: 11px !important;
+}
+
+/* Fade-in animation */
+div.hl_login--body {
+  animation: alyt-fadeIn 0.45s cubic-bezier(0.25,0.46,0.45,0.94) both !important;
+}
+
+@keyframes alyt-fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  div.hl_login--body {
+    border-radius: 16px !important;
+    margin: 16px !important;
+  }
+  .hl_login--body .card .card-body {
+    padding: 28px 24px !important;
+  }
+}
